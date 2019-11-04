@@ -10,6 +10,11 @@ namespace Ultility.Localization
     {
         public static Dictionary<string, string> DictStaticLocalizationData = new Dictionary<string, string>();
     }
+
+    public static class LocalizationConfig
+    {
+        public static string DetectValue = "<?>";
+    }
 }
 
 public enum ELocalizationLanguage
