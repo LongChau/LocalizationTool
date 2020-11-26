@@ -87,6 +87,7 @@ namespace Ultility.Localization
         [Button("LoadLocalizationFiles", ButtonSizes.Medium)]
         public void LoadLocalizationFiles()
         {
+#if UNITY_EDITOR
             if (_localizationData == null)  // check if data is null
             {
                 _localizationData = AssetDatabase.LoadAssetAtPath<LocalizationData>(_exportAssetPath);
@@ -103,6 +104,24 @@ namespace Ultility.Localization
                 _dictLocalizationData = new Dictionary<string, string>();
 
             GetLocalizationValueBaseOnKey(_localizationLanguage);
+#else
+            if (_localizationData == null)  // check if data is null
+            {
+                _localizationData = Resources.Load<LocalizationData>("Configs/LanguageLocalization_v1.0.1");
+                if (_localizationData == null)  // check if cannot find that path
+                {
+                    // tell user to import again
+                    Debug.LogError($"Cannot find language asset at path: {_exportAssetPath}");
+                    Debug.Log($"Please check path {_languageFolderPath}");
+                    return;
+                }
+            }
+
+            if (_dictLocalizationData == null)
+                _dictLocalizationData = new Dictionary<string, string>();
+
+            GetLocalizationValueBaseOnKey(_localizationLanguage);
+#endif
         }
 
         private void GetLocalizationValueBaseOnKey(ELocalizationLanguage langType)
